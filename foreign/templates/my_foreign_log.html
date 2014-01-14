@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+	<div id="page">
+		<div><label for=""><strong>account balance</strong>:</label><label for="">{{user.now_money}}</label></div>
+		<div id="ins_rate">
+			<form action="../saveorder/" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="username" value="{{user.id}}"/>
+			<div>
+				<label for="">balance:</label>
+				<input id="sell" value="0" name="balance" type="radio"/>sell
+				<input id="buy" value="1" name="balance" type="radio"/>buy
+			</div>
+			<div>
+				<label for="">lots:</label>
+				<select name="lots" id="lots">
+					<option value="0.1">0.1</option>
+					<option value="0.2">0.2</option>
+					<option value="0.3">0.3</option>
+					<option value="0.5">0.5</option>
+					<option value="1">1.00</option>
+					<option value="2">2.00</option>
+					<option value="3">3.00</option>
+					<option value="4">4.00</option>
+					<option value="5">5.00</option>
+					<option value="6">6.00</option>
+					<option value="7">7.00</option>
+					<option value="8">8.00</option>
+				</select></div>
+			<div>
+				<label for="">currency type:</label>
+				<select name="currency_type" id="currency_type">
+					<option value="eurusd">eurusd</option>
+					<option value="gbpusd">gbpusd</option>
+					<option value="usdchf">usdchf</option>
+					<option value="usdjpy">usdjpy</option>
+					<option value="usdcad">usdcad</option>
+					<option value="audusd">audusd</option>
+				</select>
+			</div>
+			<div>
+				<label for="">start point:</label>
+				<input type="text" name="start_point">
+				<label for="">Stop-Profit point:</label>
+				<input type="text" name="stop_profit_point">
+				<label for="">Stop-Loss point:</label>
+				<input type="text" name="stop_loss_point">
+				<input type="submit" value="save">
+			</div>
+			</form>
+		</div>
+		<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=1>
+		<div id="history_rate">
+			<table>
+				<caption><h2>open order</h2></caption>
+				<thead>
+					<tr>
+						<th></th>
+						<th><strong>start point</strong></th>
+						<th>start time</th>
+						<th>balance</th>
+						<th><strong>lots</strong></th>
+						<th>currency type</th>
+						<th>stop-profit point</th>
+						<th>stop-loss point</th>
+						<th><strong>stop point</strong></th>
+						<th>stop time</th>
+						<th>profit</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for o in order%}
+					<tr>
+						<td>1</td>
+						<td>{{o.start_pts}}</td>
+						<td>{{o.start_time|date:"Y-m-d H:i:s" }}</td>
+						<td>{%ifequal o.balance 0%}sell{%else%}buy{%endifequal%}</td>
+						<td>{{o.lots}}</td>
+						<td>{{o.currency_type}}</td>
+						<td>{{o.stop_profit_pts}}</td>
+						<td>{{o.stop_loss_pts}}</td>
+						<td>{{o.close_pts}}</td>
+						<td>{{o.close_time|date:"Y-m-d H:i:s" }}</td>
+						<td>{{o.profit}}</td>
+					</tr>
+					{%endfor%}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td></td>
+						<td colspan="3">profit/loss:4888.80  profit:29.58</td>
+					</tr>
+				</tfoot>
+			</table>
+			<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=1>
+			<div>
+				<label for="">date time</label>
+				<input type="input">
+				<label for="">date time</label>
+				<input type="input">
+				<input type="button" value="search">
+				<input type="button" value="look">
+			</div>
+			<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 SIZE=1>
+			<table>
+				<caption><h2>buy sell log</caption>
+				<thead>
+					<tr>
+						<th></th>
+						<th><strong>start point</strong></th>
+						<th>start time</th>
+						<th>balance</th>
+						<th><strong>lots</strong></th>
+						<th>currency type</th>
+						<th>stop-profit point</th>
+						<th>stop-loss point</th>
+						<th><strong>stop point</strong></th>
+						<th>stop time</th>
+						<th>profit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>1.65430</td>
+						<td>2013.09.23 18:09</td>
+						<td>buy</td>
+						<td>0.10</td>
+						<td>eurusd</td>
+						<td>1.658000</td>
+						<td>1.650000</td>
+						<td>1.657000</td>
+						<td>2013.09.23 22:00</td>
+						<td>27.00</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td></td>
+						<td colspan="3">profit/loss:4888.80  profit:29.58</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

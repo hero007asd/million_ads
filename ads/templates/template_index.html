@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="百万品牌，领取您自己的品牌，10×10的格子只要10RMB，绝对值得拥有，随着用户的增长，价值同样会增长。预购从速！" />
+<meta name="keywords" content="百万品牌，百万广告，广告，品牌，创新广告品牌模式" />
+<meta name="author" content="" />
+<title>百万品牌</title>
+<link href="/site_media/css/common.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/site_media/js/jquery.min.js"></script>
+<script type="text/javascript" src="/site_media/js/jquery.maphilight.min.js"></script>
+</head>
+
+<body>
+<div id="page">
+	<div id="fullbg"></div>
+	<div id="top_area">
+		<div class="fr white_space"></div>
+		<div class="fr" style="width: 1001px;height: 73px;">
+	        <div class="logo">
+	          <div id="logo"><img src="/site_media/images/001.png"/></div>
+	          <!--<div id="banner"><img src="images/002.png" /></div>-->
+	        </div>
+	        <div class="header">
+	            <ul>
+	                <li><a class="now" href="/ads/index/">首页</a></li>
+	                <li class="spacing"></li>
+	                <li><a class="not_now" href="/ads/index/">购买像素</a></li>
+	                <li class="spacing"></li>
+	                <li><a class="not_now" href="/ads/index/">FAQ</a></li>
+	                <li class="spacing"></li>
+	                <li><a class="not_now" href="/ads/index/">品牌列表</a></li>
+	                <li class="spacing"></li>
+	                <li><a class="not_now" href="/ads/index/">联系我们</a></li>
+	                <li class="spacing"></li>
+	                <li><a class="s_btn fr" href="javascript:search();">搜索</a><input id="s_val" class="s_txt fr" type="text" maxlength="5"/></li>
+	            </ul>
+	        </div>
+	    </div>
+		<div class="fr white_space"></div>
+    </div>
+    <div id="main_area">
+		<div class="fr white_space"></div>
+		<div class="fr">
+	    	<img class="map" src="/site_media/images/brand.png" alt="百万品牌" usemap="#ads"/>
+	    	<map id="ads" name="ads">
+	    		{%for shop in shop_list%}
+	    		<area id="{{shop.id}}" shape="rect" onmouseover="s(this)" onmouseout="d(this)" target="_blank" alt="{{shop.shop_name}}" coords="{{shop.location}}" href ="{{shop.web_site}}"/>
+	    		{%endfor%}
+	    	</map>
+    	</div>
+		<div class="fr assort">
+			<img class="m65" src="/site_media/images/fenl/001.png"/>
+			<img class="m65" src="/site_media/images/fenl/002.png"/>
+			<img class="m65" src="/site_media/images/fenl/003.png"/>
+			<img class="m65" src="/site_media/images/fenl/004.png"/>
+			<img class="m65" src="/site_media/images/fenl/005.png"/>
+			<img class="m65" src="/site_media/images/fenl/006.png"/>
+			<img class="m65" src="/site_media/images/fenl/007.png"/>
+		</div>
+    </div>
+    <div id="footer_area"></div>
+    <script type="text/javascript">
+   		$(function() {
+    		$('.map').maphilight();
+    	});
+    	function s(p){
+    		showbg(p);
+    	}
+    	function d(p){
+    		closebg();
+    	}
+    	function showbg(p){
+    		$("#fullbg").css("display", "none");
+    		$("#fullbg").empty();
+            //var bH = $(window).height();
+            //var bW = $(window).width();
+            var Y = $("#"+p.id).offset().top; 
+            var X = $("#"+p.id).offset().left;
+    		var a = p.coords.split(",");
+            var pX = parseInt(a[2])+parseInt(X);//bW/2-(parseInt($("#fullbg").width())/2);
+            var pY = parseInt(a[3])+parseInt(Y);//bH/2-(parseInt($("#fullbg").height())/2);
+            $("#fullbg").css({ width: 480, height: 360, display: "block"})
+            .css("left",pX+"px")
+            .css("top",pY+"px");
+            //$('#fullbg').append('<div id="close_div"><img class="fr" id="close_btn" onclick="closebg()" src="/site_media/images/008.png"></img></div>');
+            $('#fullbg').append('<div id="loading"><img src="/site_media/images/loading.gif"></img></div>');
+            $.ajax({
+            	type:"GET",
+            	url:"http://127.0.0.1:8000/ads/getdetail/?p="+p.id,
+            	dataType: "json",
+            	success:function(r){
+            		$('#loading').remove();
+                    $('#fullbg').append('<div id="detail"><h1>'+r.shop_name+'</h1><p>'+r.info+'</p></div>');
+                    if(r.logo_path != '') $('#fullbg').append('<div id="pic"><img src="'+r.logo_path+'" /></div>');
+                    else $('#fullbg').append('<div id="pic"><img src="/site_media/images/no.jpg"/></div>');
+            	},
+            	error:function(r){
+            		//alert(0);
+            	}
+            });
+    	}
+    	
+    	function closebg(){
+    		$("#fullbg").css("display", "none");
+    		$("#fullbg").empty();
+    	}
+    	function search(){
+    		closebg();
+    		var v = $(".s_txt").val();
+    		var a = $("#ads area").length;
+    		$("area").data('maphilight',false).trigger('alwaysOn.maphilight');//clear
+    		if(v!=''){
+        	    for(var i=0;i<a;i++){
+        			var myArea = $("area:eq("+i+")");
+        			if(myArea.attr("alt").indexOf(v)>=0){
+        	    		var data = myArea.mouseout().data('maphilight') || {};
+        	    		//data.alwaysOn = !data.alwaysOn;
+        	    		data.alwaysOn = true;
+        	    		myArea.data('maphilight', data).trigger('alwaysOn.maphilight');
+        			}
+        	    }
+    		} 
+    	}
+    </script>
+</div>
+</body>
+</html>
