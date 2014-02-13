@@ -51,7 +51,13 @@ class Order(models.Model):
     profit = models.CharField(max_length=10,blank=True,null=True)
     def start_time_zh(self):
         return self.start_time.strftime('%Y-%m-%d %H:%M:%S')
+    def orderProfit(self):
+        return round((self.close_pts-self.start_pts)*10000*self.lots*10,2)
+    def orderPts(self):
+        return round((self.close_pts-self.start_pts)*10000,2)
     start_time_zh.short_description= 'chinese time'
+    orderProfit.short_description = 'profit($)'
+    orderPts.short_description = 'orderPts'
 
 class CurrencyType(models.Model):
     type_name = models.CharField(max_length=10)

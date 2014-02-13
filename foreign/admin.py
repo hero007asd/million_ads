@@ -10,7 +10,7 @@ from django.utils.safestring import mark_safe
 # 	class Meta:
 # 		model = models.Order
 class OrderAdmin(admin.ModelAdmin):
-	list_display = ('user','balance','lots','start_pts','start_time','start_time_zh','uppser_case_name')
+	list_display = ('user','balance','lots','start_pts','close_pts','start_time','orderProfit','orderPts','uppser_case_name')
 	search_fields = ('user',)	
 	list_filter = ('start_time','lots','user__ini_money')
 	date_hierarchy = 'start_time'
@@ -72,6 +72,7 @@ class PersonAdmin(admin.ModelAdmin):
 	address_report.short_description = 'address'
 	address_report.allow_tags = True
 	#TODO
+	# README
 	#list_max_show_all = 20
 	#list_select_related = ('person','blog')
 	#IS_OK

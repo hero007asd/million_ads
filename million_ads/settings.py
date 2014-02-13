@@ -60,15 +60,19 @@ WSGI_APPLICATION = 'million_ads.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE':'django.db.backends.mysql',#'django.db.backends.postgresql_psycopg2','django.db.backends.sqlite3','django.db.backends.oracle'
+    #     'NAME': 'million_ads',
+    #     'USER': 'root',
+    #     'PASSWORD': 'honest1101',
+    #     'HOST': '192.168.20.113',
+    #     # 'PASSWORD': '',
+    #     # 'HOST': '127.0.0.1',
+    #     'PORT': '3306',
+    # }
     'default': {
-        'ENGINE':'django.db.backends.mysql',#'django.db.backends.postgresql_psycopg2','django.db.backends.sqlite3','django.db.backends.oracle'
-        'NAME': 'million_ads',
-        'USER': 'root',
-        'PASSWORD': 'honest1101',
-        'HOST': '192.168.20.113',
-        # 'PASSWORD': '',
-        # 'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE':'django.db.backends.sqlite3',
+        'NAME': os.path.join('foreing.db'),
     }
 }
 
