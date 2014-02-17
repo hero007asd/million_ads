@@ -79,5 +79,5 @@ def saveOrder(request):
             order.stop_loss_pts = request.POST['stop_loss_point']
         order.save()
         order = models.Order.objects.filter(user_id=order.user_id)
-        return render_to_response('my_foreign_log.html',{'order':order,'user':order[0].user}, context_instance=RequestContext(request))
+        return render_to_response('foreign/my_foreign_log.html',{'order':order,'user':order[0].user}, context_instance=RequestContext(request))
     return render_to_response()
