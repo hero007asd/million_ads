@@ -4,27 +4,20 @@ from django.http.response import HttpResponseRedirect
 from django.template.context import RequestContext
 
 # Create your views here.
+@login_required
 def inimoney(request):
-    if request.method == 'POST':
-        user = models.User()
-        if 'loginId' in request.POST:
-            user.login_name = request.POST['loginId']
-            if not user.login_name:
-                return render_to_response('foreign.html', context_instance=RequestContext(request))
-        if 'password' in request.POST:
-            user.pwd = request.POST['password']
-            if not user.pwd:
-                return render_to_response('foreign.html', context_instance=RequestContext(request))
-        if 'ini_money' in request.POST:
-            user.ini_money = request.POST['ini_money']
-            user.now_money = request.POST['ini_money']
-        if 'lever' in request.POST:
-            user.lever = request.POST['lever']
-        user = user.register()
-        print 'count:%s' % user
-        if user is None:
-            return render_to_response('foreign.html', context_instance=RequestContext(request))
-        return render_to_response('my_foreign_log.html', {'user':user},context_instance=RequestContext(request))
+    # if request.method == 'POST':
+    user = models.User()
+    if 'ini_money' in request.POST:
+        user.ini_money = request.POST['ini_money']
+        user.now_money = request.POST['ini_money']
+    if 'lever' in request.POST:
+        user.lever = request.POST['lever']
+    # user = user.register()
+    # print 'count:%s' % user
+    # if user is None:
+    #     return render_to_response('foreign/foreign.html', context_instance=RequestContext(request))
+    return render_to_response('foreign/my_foreign_log.html', {'user':user},context_instance=RequestContext(request))
 #     param = ['loginId', 'password', 'ini_money', 'lever']
 #     pa = {}
 #     for p in param:
@@ -37,7 +30,7 @@ def inimoney(request):
 #     user.lever = pa['lever']
 #     user.now_money = pa['ini_money']
 #     count = user.register()
-    return render_to_response('foreign.html', context_instance=RequestContext(request))
+    # return render_to_response('foreign/foreign.html', context_instance=RequestContext(request))
 
 def login(request):
     if request.method == 'POST':
@@ -56,7 +49,7 @@ def login(request):
         if not user.exists():
             return render_to_response('login.html', context_instance=RequestContext(request))
         return render_to_response('my_foreign_log.html', {'user':user[0],}, context_instance=RequestContext(request))
-    return render_to_response('login.html', context_instance=RequestContext(request))
+    return render_to_response('foreign/login.html', context_instance=RequestContext(request))
 
 def saveOrder(request):
     if request.method == 'POST':

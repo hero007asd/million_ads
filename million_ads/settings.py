@@ -98,3 +98,5 @@ STATICFILES_DIRS=(
     os.path.join(BASE_DIR,'assets'),
     os.path.join('site_media'),                 
 )
+
+LOGIN_URL = '/foreign/login/'
