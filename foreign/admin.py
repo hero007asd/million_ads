@@ -12,7 +12,8 @@ from django.utils.safestring import mark_safe
 class OrderAdmin(admin.ModelAdmin):
 	list_display = ('user','balance','lots','start_pts','close_pts','start_time','orderProfit','orderPts','uppser_case_name')
 	search_fields = ('user',)	
-	list_filter = ('start_time','lots','user__ini_money')
+	# list_filter = ('start_time','lots','user__ini_money')
+	list_filter = ('start_time','lots',)
 	date_hierarchy = 'start_time'
 	ordering = ('-start_time','lots')
 	# fields = ('user','start_pts','lots','balance')
@@ -78,7 +79,7 @@ class PersonAdmin(admin.ModelAdmin):
 	#IS_OK
 	# list_editable = ('is_active',)
 # Register your models here.
-admin.site.register(models.User)
+admin.site.register(models.UserTemp)
 # admin.site.register(models.Order)
 admin.site.register(models.Order,OrderAdmin)
 admin.site.register(models.CurrencyType)

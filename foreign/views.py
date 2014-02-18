@@ -2,17 +2,21 @@ from django.shortcuts import render, render_to_response
 from foreign import models
 from django.http.response import HttpResponseRedirect
 from django.template.context import RequestContext
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required
 def inimoney(request):
     # if request.method == 'POST':
-    user = models.User()
-    if 'ini_money' in request.POST:
-        user.ini_money = request.POST['ini_money']
-        user.now_money = request.POST['ini_money']
-    if 'lever' in request.POST:
-        user.lever = request.POST['lever']
+    user = User()
+    # if 'ini_money' in request.POST:
+    #     user.ini_money = request.POST['ini_money']
+    #     user.now_money = request.POST['ini_money']
+    # if 'lever' in request.POST:
+    #     user.lever = request.POST['lever']
+
     # user = user.register()
     # print 'count:%s' % user
     # if user is None:
@@ -34,7 +38,6 @@ def inimoney(request):
 
 def login(request):
     if request.method == 'POST':
-        user = []
         loginId = ''
         pwd = ''
         if 'loginId' in request.POST:
@@ -45,10 +48,12 @@ def login(request):
             pwd = request.POST['password']
             if not pwd:
                 return render_to_response('login.html', context_instance=RequestContext(request))
-        user = models.User.objects.filter(login_name=loginId, pwd=pwd)
-        if not user.exists():
-            return render_to_response('login.html', context_instance=RequestContext(request))
-        return render_to_response('my_foreign_log.html', {'user':user[0],}, context_instance=RequestContext(request))
+        # user = models.User.objects.filter(login_name=loginId, pwd=pwd)
+        user = authenticate(username=loginId,password=pwd)
+        print user
+        if user is None:
+            return render_to_response('foreign/login.html', context_instance=RequestContext(request))
+        return render_to_response('foreign/my_foreign_log.html', {'user':user,}, context_instance=RequestContext(request))
     return render_to_response('foreign/login.html', context_instance=RequestContext(request))
 
 def saveOrder(request):

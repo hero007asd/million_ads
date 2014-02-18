@@ -1,8 +1,9 @@
 from django.db import models, connection,transaction
 from django.utils.html import format_html
+from django.contrib.auth.models import User
 
 # Create your models here.
-class User(models.Model):
+class UserTemp(models.Model):
     login_name = models.CharField(max_length=20)
     pwd = models.CharField(max_length=128)
     ini_money = models.IntegerField(blank=True,null=True)
@@ -17,7 +18,7 @@ class User(models.Model):
                        [self.login_name, self.pwd, self.ini_money, self.lever, self.now_money])
         print cnt
         if cnt != 0:
-            user = User.objects.get(login_name=self.login_name)
+            user = UserTemp.objects.get(login_name=self.login_name)
 #                 user = cursor.execute('select * from foreign_user where login_name = %s and pwd=password(%s)', [self.login_name, self.pwd])
         transaction.commit_unless_managed()
         cursor.close()
