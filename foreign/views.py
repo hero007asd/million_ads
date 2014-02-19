@@ -1,16 +1,16 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response,redirect
 from foreign import models
 from django.http.response import HttpResponseRedirect
 from django.template.context import RequestContext
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
-
+from django.core.urlresolvers import reverse
 # Create your views here.
-@login_required
+@login_required(login_url='/foreign/login/')
 def inimoney(request):
     # if request.method == 'POST':
-    user = User()
+    user = request.session['_auth_user_id']
     # if 'ini_money' in request.POST:
     #     user.ini_money = request.POST['ini_money']
     #     user.now_money = request.POST['ini_money']
@@ -21,6 +21,7 @@ def inimoney(request):
     # print 'count:%s' % user
     # if user is None:
     #     return render_to_response('foreign/foreign.html', context_instance=RequestContext(request))
+    print 'user:',user,',:',request.user
     return render_to_response('foreign/my_foreign_log.html', {'user':user},context_instance=RequestContext(request))
 #     param = ['loginId', 'password', 'ini_money', 'lever']
 #     pa = {}
@@ -36,24 +37,28 @@ def inimoney(request):
 #     count = user.register()
     # return render_to_response('foreign/foreign.html', context_instance=RequestContext(request))
 
-def login(request):
+def mylogin(request):
     if request.method == 'POST':
         loginId = ''
         pwd = ''
         if 'loginId' in request.POST:
             loginId = request.POST['loginId']
             if not loginId:
-                return render_to_response('login.html', context_instance=RequestContext(request))
+                return render_to_response('foreign/login.html', context_instance=RequestContext(request))
         if 'password' in request.POST:
             pwd = request.POST['password']
             if not pwd:
-                return render_to_response('login.html', context_instance=RequestContext(request))
+                return render_to_response('foreign/login.html', context_instance=RequestContext(request))
         # user = models.User.objects.filter(login_name=loginId, pwd=pwd)
         user = authenticate(username=loginId,password=pwd)
         print user
         if user is None:
             return render_to_response('foreign/login.html', context_instance=RequestContext(request))
-        return render_to_response('foreign/my_foreign_log.html', {'user':user,}, context_instance=RequestContext(request))
+        login(request,user)
+        # return render_to_response('foreign/my_foreign_log.html', {'user':user,}, context_instance=RequestContext(request))
+
+        # return redirect('/foreign/index/')
+        return redirect(reverse('foreign:index'))
     return render_to_response('foreign/login.html', context_instance=RequestContext(request))
 
 def saveOrder(request):
