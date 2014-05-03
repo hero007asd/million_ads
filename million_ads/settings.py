@@ -49,6 +49,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #add by shitao.tommy 20140414
+    'djangomako.middleware.MakoMiddleware',
 )
 
 ROOT_URLCONF = 'million_ads.urls'
@@ -98,5 +100,5 @@ STATICFILES_DIRS=(
     os.path.join(BASE_DIR,'assets'),
     os.path.join('site_media'),                 
 )
-
+MAKO_TEMPLATE_DIRS=(BASE_DIR+'/foreign/templates/foreign',)
 LOGIN_URL = '/foreign/login/'
